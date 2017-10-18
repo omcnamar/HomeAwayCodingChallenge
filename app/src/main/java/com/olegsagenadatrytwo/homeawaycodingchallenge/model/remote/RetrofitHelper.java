@@ -13,12 +13,10 @@ import retrofit2.http.Query;
 
 
 class RetrofitHelper {
-    //https://api.seatgeek.com/2/events?client_id=OTMwNDA5OHwxNTA4MzAxNDc1LjIx&client_secret=bf36bf115948748dd3e92c1a0d98028ded4925c91ce21d70bd77ed20709499ad&q=Texas+Ranger
     private static final String BASE_URL = "https://api.seatgeek.com/";
     private static final String PATH = "2/events";
     private static final String CLIENT_ID = "OTMwNDA5OHwxNTA4MzAxNDc1LjIx";
     private static final String CLIENT_SECRET = "bf36bf115948748dd3e92c1a0d98028ded4925c91ce21d70bd77ed20709499ad";
-    private static final String QUERY = "atlanta+falcons";
 
     private static Retrofit create(){
 

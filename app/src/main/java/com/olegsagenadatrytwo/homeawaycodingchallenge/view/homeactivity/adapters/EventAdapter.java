@@ -15,8 +15,13 @@ import com.olegsagenadatrytwo.homeawaycodingchallenge.R;
 import com.olegsagenadatrytwo.homeawaycodingchallenge.entities.Event;
 import com.olegsagenadatrytwo.homeawaycodingchallenge.view.detailactivity.DetailActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
@@ -43,7 +48,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvEventTitle.setText(events.get(position).getTitle());
         holder.tvEventCity.setText(events.get(position).getVenue().getDisplayLocation());
-        holder.tvEventDate.setText(events.get(position).getDatetimeLocal());
+        String d = events.get(position).getDatetimeLocal();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+        Date date = null;
+        try {
+            date = format.parse(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.tvEventDate.setText(new SimpleDateFormat("E, dd MMMM yyyy hh:mm:ss a").format(date));
 
         String imageURL = events.get(position).getPerformers().get(0).getImage();
         Glide.with(context).load(imageURL).into(holder.ivImage);
@@ -63,6 +76,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
             public void onClick(View v) {
                 //start Detail Activity
                 Intent intent = new Intent(context, DetailActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("event", events.get(position));
                 context.startActivity(intent);
             }

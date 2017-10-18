@@ -18,6 +18,12 @@ import com.bumptech.glide.Glide;
 import com.olegsagenadatrytwo.homeawaycodingchallenge.R;
 import com.olegsagenadatrytwo.homeawaycodingchallenge.entities.Event;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,7 +59,16 @@ public class DetailActivity extends AppCompatActivity {
         //show user the details of the selected item
         mTvEventTitle.setText(event.getTitle());
         mTvAddress.setText(event.getVenue().getExtendedAddress());
-        mTvData.setText(String.valueOf(event.getDatetimeUtc()));
+
+        String d = event.getDatetimeLocal();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+        Date date = null;
+        try {
+            date = format.parse(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        mTvData.setText(new SimpleDateFormat("E, dd MMMM yyyy hh:mm:ss a").format(date));
         mTvPrice.setText(event.getStats().getAveragePrice().toString());
         String imageURL = event.getPerformers().get(0).getImage();
         Glide.with(this).load(imageURL).into(mIvDetailImage);
