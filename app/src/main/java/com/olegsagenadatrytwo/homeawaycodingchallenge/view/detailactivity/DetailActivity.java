@@ -3,6 +3,7 @@ package com.olegsagenadatrytwo.homeawaycodingchallenge.view.detailactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -70,8 +71,18 @@ public class DetailActivity extends AppCompatActivity {
         }
         mTvData.setText(new SimpleDateFormat("E, dd MMMM yyyy hh:mm:ss a").format(date));
         mTvPrice.setText(event.getStats().getAveragePrice().toString());
+
         String imageURL = event.getPerformers().get(0).getImage();
-        Glide.with(this).load(imageURL).into(mIvDetailImage);
+        if(imageURL != null){
+            Glide.with(this).load(imageURL).into(mIvDetailImage);
+        }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mIvDetailImage.setImageDrawable(getResources().getDrawable(R.drawable.defaultimage, getApplicationContext().getTheme()));
+            } else {
+                mIvDetailImage.setImageDrawable(getResources().getDrawable(R.drawable.defaultimage));
+            }
+        }
+
 
         actionBarSetUp();
     }

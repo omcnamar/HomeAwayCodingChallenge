@@ -3,6 +3,7 @@ package com.olegsagenadatrytwo.homeawaycodingchallenge.view.homeactivity.adapter
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
         holder.tvEventDate.setText(new SimpleDateFormat("E, dd MMMM yyyy hh:mm:ss a").format(date));
 
         String imageURL = events.get(position).getPerformers().get(0).getImage();
-        Glide.with(context).load(imageURL).into(holder.ivImage);
+        if(imageURL != null){
+            Glide.with(context).load(imageURL).into(holder.ivImage);
+        }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.defaultimage, context.getApplicationContext().getTheme()));
+            } else {
+                holder.ivImage.setImageDrawable(context.getResources().getDrawable(R.drawable.defaultimage));
+            }
+        }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(FAVORITES, Context.MODE_PRIVATE);
         String id = sharedPreferences.getString(String.valueOf(events.get(position).getId()), "default");
